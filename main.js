@@ -19,8 +19,23 @@ function draw() {
         objectDetector.detect(video, gotResult);
         for (i = 0; i < objects.length; i++) {
             percentage = Math.floor(objects[i].confidence * 100);
+            fill("red");
+            stroke("red");
+            noFill();
             text(objects[i].label + "" + percentage + "%", objects[i].x + 15, objects[i].y + 15);
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+            if(objects[i].label == object_name){
+                video.stop();
+                document.getElementById('status').innerHTML = "Object mentioned found";
+                objectDetector.detect(gotResult);
+                var synth= window.speechSynthesis;
+                var utterThis = new SpeechSynthesisUtterance("Object mentioned found");
+                synth.speak(utterThis);
+                document.getElementById('number').innerHTML = "No. of Objects detected = " + objects.length;
+            }
+            else{
+                document.getElementById('status').innerHTML = "Object mentioned not found"
+            }
         }
     }
 }
